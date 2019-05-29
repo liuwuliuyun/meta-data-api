@@ -9,9 +9,9 @@ sock.listen(5)
 #data structure
 file_dict = {'root' : ['user']}
 file_stat = {}
-header = '['+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+']: '
+header = '[MD1'+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+']: '
 
-# TEST CODE
+# TEST CODE COMMENT WHEN DEPLOY
 # test_string = '/user/b/c/aa.py'
 # t2 = '/user/b/bb/aa'
 
@@ -62,30 +62,32 @@ def rmfile(s):
 while True:
     con, clt_addr = sock.accept()
     rec_str = con.recv(1024).decode()
-
-    command = rec_str.split(' ')[0]
-    dir_str = rec_str.split(' ')[1]
-    if command == 'readdir':
-        out_str = readdir(dir_str)
-        con.send(str(out_str).encode())
-    elif command == 'stat':
-        out_str = stat(dir_str)
-        con.send(str(out_str).encode())
-    elif command == 'touch':
-        create_file(dir_str)
-        con.send('File creation succeed ...'.encode())
-    elif command == 'mkdir':
-        mkdir(dir_str)
-        con.send('Directory insertion succeed ...'.encode())
-    elif command == 'rm':
-        rmfile(dir_str)
-        con.send(('File ' + dir_str + 'removed ...').encode())
-    else:
-        con.send('Can not parse this command, plz check ...'.encode)
+    try:
+        command = rec_str.split(' ')[0]
+        dir_str = rec_str.split(' ')[1]
+        if command == 'ls':
+            out_str = readdir(dir_str)
+            con.send(str(out_str).encode())
+        elif command == 'stat':
+            out_str = stat(dir_str)
+            con.send(str(out_str).encode())
+        elif command == 'touch':
+            create_file(dir_str)
+            con.send('File creation succeed ...'.encode())
+        elif command == 'mkdir':
+            mkdir(dir_str)
+            con.send('Directory insertion succeed ...'.encode())
+        elif command == 'rm':
+            rmfile(dir_str)
+            con.send(('File ' + dir_str + 'removed ...').encode())
+        else:
+            con.send('Can not parse this command, plz check ...'.encode())
+    except:
+        con.send('Error occured when processing command, check before proceed ...'.encode())
 
 con.close()
 
-#TEST CODE
+#TEST CODE COMMENT WHEN DEPLOY
 # mkdir(t2)
 # create_file(test_string)
 # a = readdir('/user')
