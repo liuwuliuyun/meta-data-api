@@ -1,0 +1,25 @@
+s1$mkdir /user/s1/LiuYun
+s1$mkdir /user/s1/Github
+s1$touch /user/s1/LiuYun/myprofile.py
+s1$touch /user/s1/system.ini
+s1$ls /user
+s1$stat /user/s1/system.ini
+s1$rm /user/s1/system.ini
+s1$ls /user
+
+s2$mkdir /user/s2/LiuYun
+s2$mkdir /user/s2/Github
+s2$touch /user/s2/LiuYun/myprofile.py
+s2$touch /user/s2/system.ini
+s2$ls /user
+s2$stat /user/s2/system.ini
+s2$rm /user/s2/system.ini
+s2$ls /user
+
+s3$mkdir /user/s3/LiuYun
+s3$mkdir /user/s3/Github
+s3$touch /user/s3/LiuYun/myprofile.py
+s3$touch /user/s3/system.ini
+s3$ls /user
+s3$rm /user/s3/system.ini
+s3$ls /user

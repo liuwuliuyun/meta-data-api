@@ -23,6 +23,13 @@ while True:
             api_connector(input_str, 5558)
         elif md_server == 's3':
             api_connector(input_str, 5559)
+        elif md_server == 's':
+            print(header()+'For Metadata Server 1:')
+            api_connector('ls ', 5557)
+            print(header()+'For Metadata Server 2:')
+            api_connector('ls ', 5558)
+            print(header()+'For Metadata Server 3:')
+            api_connector('ls ', 5559)
         else:
             print(header() + 'Error: Incorrect metadata server number')
     except:

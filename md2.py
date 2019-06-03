@@ -12,8 +12,8 @@ file_stat = {}
 header = '[MD2'+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+']: '
 
 # TEST CODE COMMENT WHEN DEPLOY
-# test_string = '/user/b/c/aa.py'
-# t2 = '/user/b/bb/aa'
+# test_string = ['/user/s1/LiuYun', '/user/s1/Github', '/user/s1/LiuYun/myprofile.py', '/user/s1/system.ini']
+
 
 def mkdir(s):
     dir_list = s.split('/')
@@ -54,9 +54,13 @@ def stat(s):
         return None
 
 def rmfile(s):
-    global file_dict
+    global file_dict, file_stat
+    name = s.split('/')[-1]
     file_stat.pop(s)
-    file_dict = {k:v for k, v in file_dict.items() if v!=[s.split('/')[-1]]}
+    for k, v in file_dict.items():
+        if name in v:
+            v.remove(name)
+            file_dict[k] = v
 
 
 while True:
@@ -64,7 +68,10 @@ while True:
     rec_str = con.recv(1024).decode()
     try:
         command = rec_str.split(' ')[0]
-        dir_str = rec_str.split(' ')[1]
+        try:
+            dir_str = rec_str.split(' ')[1]
+        except:
+            dir_str = ''
         if command == 'ls':
             out_str = readdir(dir_str)
             con.send(str(out_str).encode())
@@ -79,7 +86,7 @@ while True:
             con.send('Directory insertion succeed ...'.encode())
         elif command == 'rm':
             rmfile(dir_str)
-            con.send(('File ' + dir_str + 'removed ...').encode())
+            con.send(('File ' + dir_str + ' removed ...').encode())
         else:
             con.send('Can not parse this command, plz check ...'.encode())
     except:
@@ -88,12 +95,12 @@ while True:
 con.close()
 
 #TEST CODE COMMENT WHEN DEPLOY
-# mkdir(t2)
-# create_file(test_string)
-# a = readdir('/user')
-# print(a)
-# print(file_stat)
-# print(stat('/user/b/c/aa.py'))
-# rmfile('/user/b/c/aa.py')
-# print(file_stat)
+# mkdir(test_string[0])
+# mkdir(test_string[1])
+# create_file(test_string[2])
+# create_file(test_string[3])
+# print(readdir('/user'))
 # print(file_dict)
+# rmfile(test_string[3])
+# print(file_dict)
+# print(readdir('/user'))
